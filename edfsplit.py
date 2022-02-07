@@ -11,6 +11,10 @@ from trcio import write_raw_trc
 edfdata=read_raw_edf(edffile)
 edfdatb=read_raw_edf(edffile)
 
+# round sampling rates, seems to be a problem with NK EDF files and MNE import
+edfdata.info['sfreq']=numpy.round(edfdata.info['sfreq'])
+edfdatb.info['sfreq']=numpy.round(edfdatb.info['sfreq'])
+
 # Enter appropriate intervals for the two files
 edfdata.crop(0,300).load_data()   
 edfdatb.crop(301,600).load_data()
@@ -42,6 +46,10 @@ write_raw_trc(edfdatb,'/data/downstate/testdata/EDFtrcdatb.TRC')
 # Load new EDF data to split by channel intervals
 edfdatc=read_raw_edf(edffile)
 edfdatd=read_raw_edf(edffile)
+
+# round sampling rates, seems to be a problem with NK EDF files and MNE import
+edfdatc.info['sfreq']=numpy.round(edfdatc.info['sfreq'])
+edfdatd.info['sfreq']=numpy.round(edfdatd.info['sfreq'])
 
 # Select channel intervals for the split
 dropchan_list=edfdatc.ch_names[51:len(edfdatc.ch_names)]
